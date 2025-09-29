@@ -137,25 +137,11 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    int Ymove = 0;
+    int Xmove = 0;
+    Gdiplus::Point point1(200, 100);
     switch (message)
     {
-    case WM_COMMAND:
-        {
-            int wmId = LOWORD(wParam);
-            // 메뉴 선택을 구문 분석합니다:
-            switch (wmId)
-            {
-            case IDM_ABOUT:
-                DialogBox(hInst, MAKEINTRESOURCE(IDD_ABOUTBOX), hWnd, About);
-                break;
-            case IDM_EXIT:
-                DestroyWindow(hWnd);
-                break;
-            default:
-                return DefWindowProc(hWnd, message, wParam, lParam);
-            }
-        }
-        break;
     case WM_PAINT:
         {
             PAINTSTRUCT ps;
@@ -167,14 +153,35 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             Gdiplus::SolidBrush BlueBrush(Gdiplus::Color(255 ,0, 0, 255));
             Gdiplus::Pen RedPen(Gdiplus::Color(100, 255, 0, 0));
             GraphicsInstance.FillRectangle(&RedBrush, 200, 100, 100, 100);
-            GraphicsInstance.FillClosedCurve(&RedBrush, points,5);
-            GraphicsInstance.FillEllipse(&BlueBrush, 10,10 ,50, 50);
-            GraphicsInstance.FillPie(&BlueBrush, 50, 50, 100, 150, 200, 250);
-           
-            GraphicsInstance.FillPolygon(&RedBrush,points,20,Gdiplus::FillModeAlternate);
+            GraphicsInstance.FillPolygon(&RedBrush,points,5);
           
-            GraphicsInstance.DrawLines(&RedPen, points, 5);
             EndPaint(hWnd, &ps);
+        }
+        break;
+    case WM_KEYDOWN:
+        switch (wParam)
+        {
+        case VK_LEFT:
+            OutputDebugStringW(L"왼쪽키를 눌렀다.\n");
+            InvalidateRect(hWnd, nullptr, TRUE);
+            break;
+        case VK_RIGHT:
+            OutputDebugStringW(L"오른쪽키를 눌렀다.\n");
+            InvalidateRect(hWnd, nullptr, TRUE);
+            break;
+        case VK_DOWN:
+            OutputDebugStringW(L"아래쪽키를 눌렀다.\n");
+            InvalidateRect(hWnd, nullptr, TRUE);
+            break;
+        case VK_UP:
+            OutputDebugStringW(L"위쪽키를 눌렀다.\n");
+            InvalidateRect(hWnd, nullptr, TRUE);
+            break;
+        case VK_ESCAPE:
+            DestroyWindow(hWnd);
+            break;
+        default:
+            break;
         }
         break;
     case WM_DESTROY:
