@@ -135,47 +135,121 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+bool isPush = false;
+Gdiplus::Point point1(200, 100);
+Gdiplus::Point point2(150, 100);
+Gdiplus::Point point3(250, 50);
+Gdiplus::Point point4(350, 100);
+Gdiplus::Point point5(300, 100);
+Gdiplus::Point points[5] = { point1, point2,point3,point4,point5 };
+int positionWidth = 200;
+int positionHeight = 100;
+int Width = 100;
+int Height = 100;
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     int Ymove = 0;
     int Xmove = 0;
-    Gdiplus::Point point1(200, 100);
+    
+    
+    PAINTSTRUCT ps;
+    HDC hdc = BeginPaint(hWnd, &ps);
+    // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+    
+    Gdiplus::Graphics GraphicsInstance(hdc); // Graphics 객체 만들기
+    Gdiplus::SolidBrush RedBrush(Gdiplus::Color(100, 255, 0, 0));
+
     switch (message)
     {
+    case WM_KEYUP:
+        switch (wParam)
+        {
+        case VK_LEFT:
+            isPush = false;
+            break;
+        case VK_RIGHT:
+            isPush = false;
+            break;
+        case VK_DOWN:
+            isPush = false;
+            break;
+        case VK_UP:
+            isPush = false;
+            break;
+        default:
+            break;
+        }
     case WM_PAINT:
         {
-            PAINTSTRUCT ps;
-            HDC hdc = BeginPaint(hWnd, &ps);
-            // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-            Gdiplus::Point points[5] = { Gdiplus::Point(200, 100), Gdiplus::Point(150, 100),Gdiplus::Point(250, 50),Gdiplus::Point(350, 100),Gdiplus::Point(300, 100)};
-            Gdiplus::Graphics GraphicsInstance(hdc); // Graphics 객체 만들기
-            Gdiplus::SolidBrush RedBrush(Gdiplus::Color(100, 255, 0, 0));
-            Gdiplus::SolidBrush BlueBrush(Gdiplus::Color(255 ,0, 0, 255));
-            Gdiplus::Pen RedPen(Gdiplus::Color(100, 255, 0, 0));
-            GraphicsInstance.FillRectangle(&RedBrush, 200, 100, 100, 100);
+            
+            GraphicsInstance.FillRectangle(&RedBrush, positionWidth, positionHeight, Width, Height);
             GraphicsInstance.FillPolygon(&RedBrush,points,5);
           
-            EndPaint(hWnd, &ps);
         }
         break;
     case WM_KEYDOWN:
         switch (wParam)
         {
         case VK_LEFT:
-            OutputDebugStringW(L"왼쪽키를 눌렀다.\n");
-            InvalidateRect(hWnd, nullptr, TRUE);
+            if (!isPush) {
+                OutputDebugStringW(L"왼쪽키를 눌렀다.\n");
+                positionWidth -= 50;
+                points[0].X -= 50;
+                points[1].X -= 50;
+                points[2].X -= 50;
+                points[3].X -= 50;
+                points[4].X -= 50;
+                GraphicsInstance.FillRectangle(&RedBrush, positionWidth, positionHeight, Width, Height);
+                GraphicsInstance.FillPolygon(&RedBrush, points, 5);
+                InvalidateRect(hWnd, nullptr, TRUE);
+                isPush = true;
+            }
             break;
         case VK_RIGHT:
-            OutputDebugStringW(L"오른쪽키를 눌렀다.\n");
-            InvalidateRect(hWnd, nullptr, TRUE);
+            if (!isPush) {
+                OutputDebugStringW(L"오른쪽키를 눌렀다.\n");
+                positionWidth += 50;
+                points[0].X += 50;
+                points[1].X += 50;
+                points[2].X += 50;
+                points[3].X += 50;
+                points[4].X += 50;
+                GraphicsInstance.FillRectangle(&RedBrush, positionWidth, positionHeight, Width, Height);
+                GraphicsInstance.FillPolygon(&RedBrush, points, 5);
+                InvalidateRect(hWnd, nullptr, TRUE);
+                isPush = true;
+            }
+            
             break;
         case VK_DOWN:
-            OutputDebugStringW(L"아래쪽키를 눌렀다.\n");
-            InvalidateRect(hWnd, nullptr, TRUE);
+            if (!isPush) {
+                OutputDebugStringW(L"아래쪽키를 눌렀다.\n");
+                positionHeight += 50;
+                points[0].Y += 50;
+                points[1].Y += 50;
+                points[2].Y += 50;
+                points[3].Y += 50;
+                points[4].Y += 50;
+                GraphicsInstance.FillRectangle(&RedBrush, positionWidth, positionHeight, Width, Height);
+                GraphicsInstance.FillPolygon(&RedBrush, points, 5);
+                InvalidateRect(hWnd, nullptr, TRUE);
+                isPush = true;
+            }
             break;
         case VK_UP:
-            OutputDebugStringW(L"위쪽키를 눌렀다.\n");
-            InvalidateRect(hWnd, nullptr, TRUE);
+            if (!isPush) {
+                OutputDebugStringW(L"위쪽키를 눌렀다.\n");
+                positionHeight -= 50;
+                points[0].Y -= 50;
+                points[1].Y -= 50;
+                points[2].Y -= 50;
+                points[3].Y -= 50;
+                points[4].Y -= 50;
+                GraphicsInstance.FillRectangle(&RedBrush, positionWidth, positionHeight, Width, Height);
+                GraphicsInstance.FillPolygon(&RedBrush, points, 5);
+                InvalidateRect(hWnd, nullptr, TRUE);
+                isPush = true;
+            }
             break;
         case VK_ESCAPE:
             DestroyWindow(hWnd);
@@ -185,6 +259,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         }
         break;
     case WM_DESTROY:
+        EndPaint(hWnd, &ps);
         PostQuitMessage(0);
         break;
     default:
