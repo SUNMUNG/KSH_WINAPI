@@ -3,8 +3,10 @@
 
 #include "framework.h"
 #include "KSHWINAPI.h"
-
+#include <string>
 #include <crtdbg.h>
+#include <vector>
+#include <algorithm>
 #define _CRTDBG_MAP_ALLOC
 #define new new(_NORMAL_BLOCK,__FILE__,__LINE__)
 #define MAX_LOADSTRING 100
@@ -68,7 +70,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     Gdiplus::GdiplusShutdown(Token);
     return (int) msg.wParam;
 }
-
+std::vector<int> vec2;
 
 
 //
@@ -121,7 +123,6 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 
    ShowWindow(hWnd, nCmdShow);
    UpdateWindow(hWnd);
-
    return TRUE;
 }
 
@@ -157,9 +158,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     Gdiplus::SolidBrush BlueBrush(Gdiplus::Color(100, 0, 0, 255));
     
     // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+   
     
     
-
+    
     switch (message)
     {
     case WM_PAINT:
