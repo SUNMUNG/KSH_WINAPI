@@ -4,6 +4,9 @@
 #include "framework.h"
 #include "KSHWINAPI.h"
 
+#include <crtdbg.h>
+#define _CRTDBG_MAP_ALLOC
+#define new new(_NORMAL_BLOCK,__FILE__,__LINE__)
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
@@ -26,6 +29,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     UNREFERENCED_PARAMETER(lpCmdLine);
 
     // TODO: 여기에 코드를 입력합니다.
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -76,7 +80,7 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     wcex.hIcon          = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_KSHWINAPI));
     wcex.hCursor        = LoadCursor(nullptr, IDC_ARROW);
     wcex.hbrBackground  = (HBRUSH)(COLOR_WINDOW+1);
-    wcex.lpszMenuName   = MAKEINTRESOURCEW(IDC_KSHWINAPI);
+    wcex.lpszMenuName = nullptr;//MAKEINTRESOURCEW(IDC_KSHWINAPI);
     wcex.lpszClassName  = szWindowClass;
     wcex.hIconSm        = LoadIcon(wcex.hInstance, MAKEINTRESOURCE(IDI_SMALL));
 
@@ -96,10 +100,10 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // 인스턴스 핸들을 전역 변수에 저장합니다.
-
-   HWND hWnd = CreateWindowW(szWindowClass, szTitle, WS_OVERLAPPEDWINDOW,
-      CW_USEDEFAULT, 0, CW_USEDEFAULT, 0, nullptr, nullptr, hInstance, nullptr);
-
+                                           //프로그램 타이틀      //전체기능에서        최대화            화면조절기능 해제
+   HWND hWnd = CreateWindowW(szWindowClass, L"KSH_WINAPI", WS_OVERLAPPEDWINDOW & ~WS_MAXIMIZEBOX & ~WS_THICKFRAME,
+      CW_USEDEFAULT, 0, 400, 300, nullptr, nullptr, hInstance, nullptr);
+           //시작지점     //화면크기
    if (!hWnd)
    {
       return FALSE;
