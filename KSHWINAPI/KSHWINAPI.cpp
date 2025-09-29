@@ -146,21 +146,31 @@ int positionWidth = 200;
 int positionHeight = 100;
 int Width = 100;
 int Height = 100;
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    int Ymove = 0;
-    int Xmove = 0;
-    
-    
     PAINTSTRUCT ps;
     HDC hdc = BeginPaint(hWnd, &ps);
-    // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
-    
     Gdiplus::Graphics GraphicsInstance(hdc); // Graphics 객체 만들기
     Gdiplus::SolidBrush RedBrush(Gdiplus::Color(100, 255, 0, 0));
+    Gdiplus::SolidBrush GreenBrush(Gdiplus::Color(100, 0, 255, 0));
+    Gdiplus::SolidBrush BlueBrush(Gdiplus::Color(100, 0, 0, 255));
+    
+    // TODO: 여기에 hdc를 사용하는 그리기 코드를 추가합니다...
+    
+    
 
     switch (message)
     {
+    case WM_PAINT:
+        {
+            GraphicsInstance.FillRectangle(&GreenBrush, 0, 0, 400, 300);
+            GraphicsInstance.FillRectangle(&RedBrush, positionWidth, positionHeight, Width, Height);
+            GraphicsInstance.FillPolygon(&RedBrush,points,5);
+            EndPaint(hWnd, &ps);
+          
+        }
+        break;
     case WM_KEYUP:
         switch (wParam)
         {
@@ -179,14 +189,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         default:
             break;
         }
-    case WM_PAINT:
-        {
-            
-            GraphicsInstance.FillRectangle(&RedBrush, positionWidth, positionHeight, Width, Height);
-            GraphicsInstance.FillPolygon(&RedBrush,points,5);
-          
-        }
-        break;
     case WM_KEYDOWN:
         switch (wParam)
         {
@@ -199,6 +201,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 points[2].X -= 50;
                 points[3].X -= 50;
                 points[4].X -= 50;
+                GraphicsInstance.FillRectangle(&GreenBrush, 0, 0, 400, 300);
                 GraphicsInstance.FillRectangle(&RedBrush, positionWidth, positionHeight, Width, Height);
                 GraphicsInstance.FillPolygon(&RedBrush, points, 5);
                 InvalidateRect(hWnd, nullptr, TRUE);
