@@ -2,7 +2,7 @@
 //
 
 #include "framework.h"
-#include "KSHWINAPI.h"
+#include "kSHWINAPI.h"
 
 //#include <crtdbg.h>
 //#define _CRTDBG_MAP_ALLOC
@@ -15,7 +15,7 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
-Gdiplus::Point g_AppPosition(1000, 1000);
+Gdiplus::Point g_AppPosition(1000, 500);
 Gdiplus::Point g_ScreenSize(800, 600);
 
 Gdiplus::Point g_HousePosition(100, 100);
@@ -193,6 +193,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
     case WM_DESTROY:
         // 윈도우가 삭제되었을 때 날아오는 메세지
+        delete g_PlayerImage;
+        g_PlayerImage = nullptr;
+
         delete g_BackBufferGraphics;
         g_BackBufferGraphics = nullptr;
         delete g_BackBuffer;
@@ -228,22 +231,25 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             }
             g_BackBufferGraphics->DrawPolygon(&GreenPen, Positions, g_HouseVerticesCount);
             //g_BackBufferGraphics->FillPolygon(&GreenBrush, Positions, g_HouseVerticesCount);
-            if (g_PlayerImage) {
-                //g_PlayerImage가 로딩되어 있다.
+
+            if (g_PlayerImage)
+            {
+                // g_PlayerImage가 로딩되어 있다.
                 g_BackBufferGraphics->DrawImage(
-                    g_PlayerImage, // 그려질 이미지
-                    100, 100, // 그려질 위치
-                    PlayerImageSize, PlayerImageSize);
+                    g_PlayerImage,  // 그려질 이미지
+                    100, 100,       // 그려질 위치
+                    PlayerImageSize, PlayerImageSize);  // 그려질 사이즈
             }
-            else {
+            else
+            {
+                // 플레이어 이미지가 없으면 원을 대신 그림
                 Gdiplus::SolidBrush RedBrush(Gdiplus::Color(255, 255, 0, 0));
                 g_BackBufferGraphics->FillEllipse(
                     &RedBrush,
                     100, 100,
-                    PlayerImageSize, PlayerImageSize
-                );
+                    PlayerImageSize, PlayerImageSize);
             }
-            
+
             Gdiplus::Graphics GraphicsInstance(hdc);    // Graphics객체 만들기(hdc에 그리기 위한 도구 만들기)
             GraphicsInstance.DrawImage(g_BackBuffer, 0, 0);
         }
