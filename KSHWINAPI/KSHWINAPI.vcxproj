@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="enums.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="KSHWINAPI.h" />
     <ClInclude Include="Resource.h" />
