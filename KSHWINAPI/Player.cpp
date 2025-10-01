@@ -1,5 +1,6 @@
 ﻿#include "Player.h"
 #include "Common.h"
+#include "GameManager.h"
 
 Player::Player(const wchar_t* InImagePath)
     : Actor(InImagePath)
@@ -27,16 +28,19 @@ void Player::OnTick(float InDeltaTime)
 
     if (Position.X < (0 - Size * 0.5f))
     {
-        Position.X = g_ScreenSize.X + Size * 0.5f; // 순환 이동
+        Position.X = GameManager::ScreenWidth + Size * 0.5f; // 순환 이동
     }
-    else if ((g_ScreenSize.X + Size * 0.5f) < Position.X)
+    else if ((GameManager::ScreenWidth + Size * 0.5f) < Position.X)
     {
         Position.X = static_cast<float>(0 - Size * 0.5f);
     }
 }
+
 void Player::OnRender(Gdiplus::Graphics* InGraphics)
 {
     Actor::OnRender(InGraphics);    // 부모의 OnRender 실행
+
+    // 부모의 OnRender 실행한 후 추가로 동작 실행
     if (!Image)
     {
         Gdiplus::SolidBrush RedBrush(Gdiplus::Color(255, 255, 0, 0));
