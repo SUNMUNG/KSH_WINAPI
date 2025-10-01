@@ -361,3 +361,10 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/KSHWINAPI/KSHWINAPI.vcxproj.filters
+/.gitignore
+/KSHWINAPI/Player.cpp
+/KSHWINAPI/BackGround.h
+/KSHWINAPI/BackGround.cpp
+/KSHWINAPI/images/tileRight.png
+/KSHWINAPI/images/tileLeft.png
