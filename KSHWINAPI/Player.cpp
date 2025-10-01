@@ -1,5 +1,4 @@
 ﻿#include "Player.h"
-#include "Common.h"
 #include "GameManager.h"
 
 Player::Player(const wchar_t* InImagePath)

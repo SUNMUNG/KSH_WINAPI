@@ -1,6 +1,5 @@
 #pragma once
 #include <unordered_map>
-#include "enums.h"
 #include "Actor.h"
 
 // extern : 뒤에 있는 변수가 다른 파일에 선언이 되어 있다.

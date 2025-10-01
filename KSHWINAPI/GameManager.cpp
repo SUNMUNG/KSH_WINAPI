@@ -14,16 +14,28 @@ void GameManager::Initialize()
         MessageBox(hMainWindow, L"백 버퍼 그래픽스 생성 실패", L"오류", MB_OK | MB_ICONERROR);
     }
 
-    Background* background = new Background(L"./Images/Background.png");
-    background->SetRenderLayer(RenderLayer::Background);
-    AddActor(background);
 
-    Player* MainPlayer = new Player(L"./Images/Background.png");
+
+    Player* MainPlayer = new Player(L"./Images/ship.png");
     MainPlayer->SetRenderLayer(RenderLayer::Player);
     AddActor(MainPlayer);
+    AddActor2(MainPlayer, RenderLayer::Player);
+    TestGridActor* testGrid = new TestGridActor();
+    testGrid->SetRenderLayer(RenderLayer::Test);
+    AddActor(testGrid);
+    AddActor2(testGrid, RenderLayer::Test);
+
+    Background* background = new Background(L"./Images/tile.png");
+    background->SetRenderLayer(RenderLayer::Background);
+    AddActor(background);
+    AddActor2(background, RenderLayer::Background);
 
 
-    AddActor(new TestGridActor());
+
+    std::sort(Actors.begin(), Actors.end(), [](Actor* left, Actor* Right) {
+        return static_cast<int>(left->GetRenderLayer()) < static_cast<int>(Right->GetRenderLayer());
+        }
+    );
 }
 
 void GameManager::Destroy()
@@ -48,10 +60,26 @@ void GameManager::Render()
     {
         BackBufferGraphics->Clear(Gdiplus::Color(255, 0, 0, 0));
 
+        
         for (Actor* Actor : Actors)
         {
             Actor->OnRender(BackBufferGraphics);
         }
+
+        //for (Actor* Actor : Actors)
+        //{
+        //   
+
+        //    for (auto& pair : Actors2)
+        //    {
+        //        Actor* actor = pair.first;
+        //        // Actor를 사용하여 필요한 작업 수행
+        //        Actor->OnRender(BackBufferGraphics);
+        //    }
+        //    Actor->OnRender(BackBufferGraphics);
+        //}
+        
+        
     }
 }
 

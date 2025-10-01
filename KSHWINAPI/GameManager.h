@@ -1,7 +1,9 @@
 #pragma once
 #include <Windows.h>
 #include <vector>
-#include "Common.h"
+#include <map>
+#include <algorithm>
+#include "ResourceManager.h"
 #include "Actor.h"
 #include "Player.h"
 
@@ -22,10 +24,12 @@ public:
 
 	void AddActor(Actor* InActor) { Actors.push_back(InActor); }
 
+    void AddActor2(Actor* InActor, RenderLayer inLayer) { Actors2.insert(std::make_pair(InActor, static_cast<int>(inLayer))); }
+	
+
 	static constexpr unsigned int ScreenWidth = 600;
 	static constexpr unsigned int ScreenHeight = 800;
 	static constexpr unsigned int ActorDefaultSize = 64;
-
 	// Getter
 	inline const HWND GetMainWindowHandle() const { return hMainWindow; }
 	inline const Point& GetAppPosition() const { return AppPosition; }
@@ -48,8 +52,9 @@ private:
 	GameManager& operator=(const GameManager&) = delete; // 대입 연산자 삭제
 	GameManager(const GameManager&&) = delete;	// 이동 생성자 삭제
 	GameManager& operator=(const GameManager&&) = delete; // 이동 대입 연산자 삭제
-
+	
 	std::vector<Actor*> Actors;
+	std::map<Actor*, int> Actors2;
 
 	HWND hMainWindow = nullptr;
 	Point AppPosition = Point(1000, 100);

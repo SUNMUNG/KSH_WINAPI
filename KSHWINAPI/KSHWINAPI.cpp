@@ -15,8 +15,6 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
-
-
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
 BOOL                InitInstance(HINSTANCE, int);
@@ -40,7 +38,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     Gdiplus::GdiplusStartup(&Token, &StartupInput, nullptr);
 
     GameManager::Get().Initialize();
-
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -78,13 +75,11 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         float DeltaTime = (CurrentTime - LastTime) / 1000.0f;   // 결과를 초 단위로 변경
         LastTime = CurrentTime;
 
-
         GameManager::Get().Tick(DeltaTime);
+
         InvalidateRect(GameManager::Get().GetMainWindowHandle(),
             nullptr, FALSE); // 매 프레임마다 WM_PAINT요청
     }
-
-    //GameManager a;
 
     GameManager::Get().Destroy();
 

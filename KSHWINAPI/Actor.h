@@ -15,15 +15,16 @@ public:
 	inline const Gdiplus::PointF& GetPivot() { return this->Pivot; };
 	inline const Gdiplus::PointF& GetPos() { return this->Position; }
 	inline const int GetSize() { return this->Size; }
+	inline const RenderLayer GetRenderLayer() { return TargetRenderLayer; }
 	
 	inline void SetPosition(float InX, float InY) { Position.X = InX; Position.Y = InY; }
 	inline void SetSize(int InSize) { Size = InSize; }
 	inline void SetPivot(float InX, float InY) { Pivot.X = InX; Pivot.Y = InY; }
 	inline void SetRenderLayer(RenderLayer InLayer) { TargetRenderLayer = InLayer; }
-
+	
 protected:
 	int Size = 64;
-
+	RenderLayer TargetRenderLayer = RenderLayer::Misc;
 	// 중심점
 	PointF Pivot = { 0.5f, 0.5f }; // Pivot 기본 값은 한가운데
 
