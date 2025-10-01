@@ -126,11 +126,13 @@
     <ClInclude Include="enums.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="KSHWINAPI.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="KSHWINAPI.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="KSHWINAPI.rc" />
