@@ -132,7 +132,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="TestActor.h" />
+    <ClInclude Include="TestGridActor.h" />
     <ClInclude Include="TestHouseActor.h" />
   </ItemGroup>
   <ItemGroup>
@@ -140,7 +140,7 @@
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="KSHWINAPI.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="TestActor.cpp" />
+    <ClCompile Include="TestGridActor.cpp" />
     <ClCompile Include="TestHouseActor.cpp" />
   </ItemGroup>
   <ItemGroup>

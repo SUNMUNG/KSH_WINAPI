@@ -15,23 +15,18 @@ HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
-HWND g_hMainWindow = nullptr;
+
 
 Gdiplus::Point g_AppPosition(1000, 100);
 Gdiplus::Point g_ScreenSize(600, 800);
-
-Gdiplus::Point g_HousePosition(100, 100);
-constexpr int g_HouseVerticesCount = 7;
-const Gdiplus::Point g_HouseVertices[g_HouseVerticesCount] =
-{
-    {0,-100},{50,-50},{30,-50},{30,0},{-30,0},{-30,-50},{-50,-50}
-};
 
 Gdiplus::Bitmap* g_BackBuffer = nullptr;    // 백버퍼용 종이
 Gdiplus::Graphics* g_BackBufferGraphics = nullptr;  // 백버퍼용 종이에 그리기 위한 도구
 
 Player* g_Player = nullptr;
 Background* g_Background = nullptr;
+TestGridActor* g_TestGridActor = nullptr;
+TestHouseActor* g_TestHouseActor = nullptr;
 
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
@@ -57,6 +52,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     Gdiplus::GdiplusStartup(&Token, &StartupInput, nullptr);
     g_Player = new Player(L"./Images/ship.png");
     g_Background = new Background(L"./Images/tile.png");
+    g_TestGridActor = new TestGridActor();
+    g_TestHouseActor = new TestHouseActor();
+    g_TestHouseActor->SetPosition(200, 200);
 
     // 전역 문자열을 초기화합니다.
     LoadStringW(hInstance, IDS_APP_TITLE, szTitle, MAX_LOADSTRING);
@@ -73,6 +71,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
     ULONGLONG LastTime = GetTickCount64();
+
     // 3. 메시지 루프
     // 기본 메시지 루프입니다:(메세지 큐에 들어온 메세지들을 하나씩 처리하는 부분)
     while (true)
@@ -88,14 +87,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 DispatchMessage(&msg);
             }
         }
+
         ULONGLONG CurrentTime = GetTickCount64();
-        float DeltaTime = (CurrentTime - LastTime)/1000.0f;
+        float DeltaTime = (CurrentTime - LastTime) / 1000.0f;   // 결과를 초 단위로 변경
         LastTime = CurrentTime;
+
         g_Background->OnTick(DeltaTime);
         g_Player->OnTick(DeltaTime);
+
         InvalidateRect(g_hMainWindow, nullptr, FALSE); // 매 프레임마다 WM_PAINT요청
     }
 
+    delete g_TestHouseActor;
+    g_TestHouseActor = nullptr;
+    delete g_TestGridActor;
+    g_TestGridActor = nullptr;
     delete g_Background;
     g_Background = nullptr;
     delete g_Player;
@@ -213,28 +219,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         if (g_BackBufferGraphics)   // g_BackBufferGraphics 필수
         {
             g_BackBufferGraphics->Clear(Gdiplus::Color(255, 0, 0, 0));
-            Gdiplus::SolidBrush GreenBrush(Gdiplus::Color(255, 0, 255, 0));
-            Gdiplus::SolidBrush BlueBrush(Gdiplus::Color(255, 0, 0, 255));
-            Gdiplus::SolidBrush YelloBrush(Gdiplus::Color(255, 255, 255, 0));
+
             g_Background->OnRender(g_BackBufferGraphics);
-            for (int y = 0; y < 16; y++)
-            {
-                for (int x = 0; x < 12; x++)
-                {
-                    g_BackBufferGraphics->FillRectangle(&BlueBrush, 50 * x, 50 * y, 5, 5);
-                }
-            }
+            g_TestGridActor->OnRender(g_BackBufferGraphics);
+            g_TestHouseActor->OnRender(g_BackBufferGraphics);
 
-            Gdiplus::Pen GreenPen(Gdiplus::Color(255, 0, 255, 0), 2.0f);
-            Gdiplus::Point Positions[g_HouseVerticesCount];
-            for (int i = 0; i < g_HouseVerticesCount; i++)
-            {
-                Positions[i] = g_HousePosition + g_HouseVertices[i];
-            }
-            g_BackBufferGraphics->DrawPolygon(&GreenPen, Positions, g_HouseVerticesCount);
-            //g_BackBufferGraphics->FillPolygon(&GreenBrush, Positions, g_HouseVerticesCount);
-
-            
             g_Player->OnRender(g_BackBufferGraphics);
 
             Gdiplus::Graphics GraphicsInstance(hdc);    // Graphics객체 만들기(hdc에 그리기 위한 도구 만들기)
@@ -265,8 +254,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 }
 
 // 실습
-// 1. 집모양을 그리고 키보드 입력으로 위아래좌우로 움직이기.
-// 2. 누르고 있을 때 한번만 움직여야 한다.(WM_KEYUP 활용)
+// 1. TestGridActor만들기 -> 50픽셀 단위로 점찍어서 위치 확인 쉽게 할 수 있게 해주는 클래스
+// 2. TestHouseActor만들기 -> 집모양 그려주는 클래스
+
 
 
 // 정보 대화 상자의 메시지 처리기입니다.
