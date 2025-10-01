@@ -19,7 +19,7 @@ public:
 	inline void SetPosition(float InX, float InY) { Position.X = InX; Position.Y = InY; }
 	inline void SetSize(int InSize) { Size = InSize; }
 	inline void SetPivot(float InX, float InY) { Pivot.X = InX; Pivot.Y = InY; }
-
+	inline void SetRenderLayer(RenderLayer InLayer) { TargetRenderLayer = InLayer; }
 
 protected:
 	int Size = 64;
