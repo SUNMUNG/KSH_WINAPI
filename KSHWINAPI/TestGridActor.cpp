@@ -1,10 +1,11 @@
 #include "TestGridActor.h"
+#include "GameManager.h"
 
 TestGridActor::TestGridActor()
     :Actor(nullptr)
 {
-    WindowWidth = g_ScreenSize.X;
-    WindowHeight = g_ScreenSize.Y;
+    WindowWidth = GameManager::ScreenWidth;
+    WindowHeight = GameManager::ScreenHeight;
 
     Size = 5;
     HalfSize = Size / 2;
@@ -19,14 +20,15 @@ TestGridActor::~TestGridActor()
 }
 
 void TestGridActor::OnRender(Gdiplus::Graphics* InGraphics)
-{	
-    if (!InGraphics || !BlueBrush)return;
+{
+    if (!InGraphics || !BlueBrush) return;
 
-    for (int y = 0; y <= WindowHeight; y+= interval)
+    for (int y = 0; y <= WindowHeight; y += interval)
     {
-        for (int x = 0; x <= WindowWidth; x+= interval)
+        for (int x = 0; x <= WindowWidth; x += interval)
         {
-            InGraphics->FillRectangle(BlueBrush, x, y, Size, Size);
+            InGraphics->FillRectangle(BlueBrush, x - HalfSize, y - HalfSize, Size, Size);
         }
     }
 }
+

@@ -1,5 +1,5 @@
 #include "TestHouseActor.h"
-
+#include "GameManager.h"
 TestHouseActor::TestHouseActor()
 	: Actor(nullptr)
 {
