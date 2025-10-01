@@ -91,8 +91,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         ULONGLONG CurrentTime = GetTickCount64();
         float DeltaTime = (CurrentTime - LastTime)/1000.0f;
         LastTime = CurrentTime;
-        g_Background->Tick(DeltaTime);
-        g_Player->Tick(DeltaTime);
+        g_Background->OnTick(DeltaTime);
+        g_Player->OnTick(DeltaTime);
         InvalidateRect(g_hMainWindow, nullptr, FALSE); // 매 프레임마다 WM_PAINT요청
     }
 
@@ -216,7 +216,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             Gdiplus::SolidBrush GreenBrush(Gdiplus::Color(255, 0, 255, 0));
             Gdiplus::SolidBrush BlueBrush(Gdiplus::Color(255, 0, 0, 255));
             Gdiplus::SolidBrush YelloBrush(Gdiplus::Color(255, 255, 255, 0));
-            g_Background->Render(g_BackBufferGraphics);
+            g_Background->OnRender(g_BackBufferGraphics);
             for (int y = 0; y < 16; y++)
             {
                 for (int x = 0; x < 12; x++)
@@ -235,7 +235,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             //g_BackBufferGraphics->FillPolygon(&GreenBrush, Positions, g_HouseVerticesCount);
 
             
-            g_Player->Render(g_BackBufferGraphics);
+            g_Player->OnRender(g_BackBufferGraphics);
 
             Gdiplus::Graphics GraphicsInstance(hdc);    // Graphics객체 만들기(hdc에 그리기 위한 도구 만들기)
             GraphicsInstance.DrawImage(g_BackBuffer, 0, 0);
