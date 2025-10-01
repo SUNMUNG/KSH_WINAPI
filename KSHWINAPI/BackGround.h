@@ -1,33 +1,31 @@
 #pragma once
-#include <unordered_map>
-#include <Windows.h>
-#include <gdiplus.h>
-#include "enums.h"
+#include "Common.h"
 
-// extern : 뒤에 있는 변수가 다른 파일에 선언이 되어 있다.
-extern HWND g_hMainWindow; // g_hMainWindow가 다른 파일에 있다는 것을 알려줌
-extern Gdiplus::Point g_ScreenSize;
-
-using PointF = Gdiplus::PointF;
-class BackGround
+class Background
 {
 public:
-	BackGround() = delete;
-	BackGround(const wchar_t* InImagePath);	// 무조건 파일 경로를 받아야 생성할 수 있다.
-	~BackGround()=default;
+	Background() = delete;
+	Background(const wchar_t* InImagePath);	// 무조건 파일 경로를 받아야 생성할 수 있다.
+	~Background();
 
-	void MapRender(Gdiplus::Graphics* InGraphics,int posX,int posY);
-	int XMove = 5;
-	int Mapwidth = 600;
-	int MapHeight = 800;
-	PointF PositionA = { 0.0f, 0.0f };
-	PointF PositionB = { 0.0f, -800.0f };
+	void Tick(float inDealtaTime);
+	void Render(Gdiplus::Graphics* InGraphics);
+
 private:
-	Gdiplus::Bitmap* Image = nullptr;
-	
-	// 플레이어가 그려질 크기
-	static constexpr int PixelSizeX = 650;
-	static constexpr int PixelSizeY = 850;
+	static constexpr int PixelSize = 64;
 
+	// 중심점
+	PointF Pivot = { 0.5f, 0.5f }; // Pivot 기본 값은 한가운데
+
+	// 위치
+	PointF Position = { 0.0f, 0.0f };
+
+	// 이동 속도
+	float Speed = 50.0f;
+
+	// 이미지가 들어있을 비트맵
+	Gdiplus::Bitmap* Image = nullptr;   // 플레이어가 그려질 종이		
+
+	float Offset=0.0f;
 };
 
