@@ -2,10 +2,18 @@
 #include "GameManager.h"
 #include "ResourceManager.h"
 
-
 Actor::Actor(ResourceID InID)
 {
     Image = ResourceManager::Get().GetImage(InID);
+}
+
+void Actor::DestroyActor()
+{
+    if (!IsPendingDestroy)
+    {
+        IsPendingDestroy = true;
+        GameManager::Get().RequestDestroy(this);    // 자신을 제거 요청하기
+    }
 }
 
 void Actor::OnTick(float InDeltaTime)
