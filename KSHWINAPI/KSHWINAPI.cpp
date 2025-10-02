@@ -38,7 +38,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ULONG_PTR Token;
     Gdiplus::GdiplusStartupInput StartupInput;
     Gdiplus::GdiplusStartup(&Token, &StartupInput, nullptr);
-
+    ResourceManager::Get().Initialize();
     GameManager::Get().Initialize();
 
 
@@ -85,7 +85,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     }
 
     //GameManager a;
-
+    ResourceManager::Get().Destroy();
     GameManager::Get().Destroy();
 
     // GDI+ 정리하기

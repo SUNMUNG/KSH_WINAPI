@@ -20,3 +20,23 @@ enum class RenderLayer
 	Test,
 	Misc
 };
+
+enum class ResourceID : uint8_t
+{
+	None = 0,
+	Player,
+	Bomb,
+	Background,
+	Number0,
+	Number1,
+	Number2,
+	Number3,
+	Number4,
+	Number5,
+	Number6,
+	Number7,
+	Number8,
+	Number9,
+	Dot,
+	// 이미지가 추가되면 enum 추가
+};

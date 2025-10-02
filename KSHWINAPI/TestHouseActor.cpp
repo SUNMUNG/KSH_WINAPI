@@ -1,7 +1,7 @@
 #include "TestHouseActor.h"
 #include "GameManager.h"
 TestHouseActor::TestHouseActor()
-	: Actor(nullptr)
+	: Actor(ResourceID::None)
 {
 	GreenPen = new Gdiplus::Pen(Gdiplus::Color(255, 0, 255, 0), 2.0f);
     int Max = -1;

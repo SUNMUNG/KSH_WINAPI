@@ -14,20 +14,23 @@ void GameManager::Initialize()
         MessageBox(hMainWindow, L"백 버퍼 그래픽스 생성 실패", L"오류", MB_OK | MB_ICONERROR);
     }
 
-    Background* background = new Background(L"./Images/Background.png");
-    background->SetRenderLayer(RenderLayer::Background);
-    AddActor(background);
-
-    Player* MainPlayer = new Player(L"./Images/Background.png");
-    MainPlayer->SetRenderLayer(RenderLayer::Player);
-    AddActor(MainPlayer);
-
-
-    AddActor(new TestGridActor());
+    Background* background = new Background(ResourceID::Background);
+    Player* MainPlayer = new Player(ResourceID::Player);
+    AddActor(RenderLayer::Background, background);
+    AddActor(RenderLayer::Player,MainPlayer);
+    AddActor(RenderLayer::Test,new TestGridActor());
 }
 
 void GameManager::Destroy()
 {
+    for (auto pair : Actors) {
+        for (Actor* actor : pair.second) {
+            delete actor;
+        }
+        pair.second.clear();
+    }
+    Actors.clear();
+
     delete BackBufferGraphics;
     BackBufferGraphics = nullptr;
     delete BackBuffer;
@@ -36,10 +39,13 @@ void GameManager::Destroy()
 
 void GameManager::Tick(float InDeltaTime)
 {
-    for (Actor* Actor : Actors)
-    {
-        Actor->OnTick(InDeltaTime);
+    for (auto pair : Actors) {
+        for (Actor* Actor : pair.second)
+        {
+            Actor->OnTick(InDeltaTime);
+        }
     }
+    
 }
 
 void GameManager::Render()
@@ -48,10 +54,14 @@ void GameManager::Render()
     {
         BackBufferGraphics->Clear(Gdiplus::Color(255, 0, 0, 0));
 
-        for (Actor* Actor : Actors)
-        {
-            Actor->OnRender(BackBufferGraphics);
+
+        for (auto pair : Actors) {
+            for (Actor* Actor : pair.second)
+            {
+                Actor->OnRender(BackBufferGraphics);
+            }
         }
+        
     }
 }
 
